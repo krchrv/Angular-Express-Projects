@@ -9,8 +9,6 @@
 <body>
   <h1>{{ title }}</h1>
   <h1>All the tasks:</h1>
-  <ul *ngFor="let task of tasks">
-    <li>{{ task }}</li>
-  </ul>
+  <p *ngFor="let task of tasks">Task Title: {{ task['title'] }}</p>
 </body>
 </html>
