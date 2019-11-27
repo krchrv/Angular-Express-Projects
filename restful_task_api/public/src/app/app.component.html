@@ -8,7 +8,10 @@
 </head>
 <body>
   <h1>{{ title }}</h1>
-  <h1>All the tasks:</h1>
-  <p *ngFor="let task of tasks">Task Title: {{ task['title'] }}</p>
+  <button (click)="onButton(5)">GET ALL TASKS</button>
+  <p *ngFor="let task of tasks">{{ task.title }}<a href="#" (click)="onShowBtn(task._id)">show</a></p>
+  <p *ngIf="aTask">Task that was clicked: {{ aTask.title }}</p>
+  
+  <!-- <p *ngFor="let task of tasks">Task Title: {{ task['title'] }}</p> -->
 </body>
 </html>
