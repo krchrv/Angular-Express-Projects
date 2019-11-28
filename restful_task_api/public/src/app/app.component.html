@@ -7,11 +7,41 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>{{ title }}</h1>
-  <button (click)="onButton(5)">GET ALL TASKS</button>
-  <p *ngFor="let task of tasks">{{ task.title }}<a href="#" (click)="onShowBtn(task._id)">show</a></p>
+  <h1>All Tasks</h1>
+  <table>
+    <tr>
+      <th>Title</th>
+      <th>Actions</th>
+    </tr>
+    <p *ngFor="let task of tasks">
+    <tr>
+      <td>{{ task.title }}</td>
+      <td>
+        <a href="#" (click)="onShowBtn(task._id)">show</a>
+      </td>
+      <td>
+        <a href="#" (click)="onDeleteBtn(task._id)">delete</a>
+      </td>
+      <td>
+        <a href="#" (click)="onEditBtn(task)">edit</a>
+      </td>
+    </tr>
+    </p>
+  </table>
   <p *ngIf="aTask">Task that was clicked: {{ aTask.title }}</p>
-  
-  <!-- <p *ngFor="let task of tasks">Task Title: {{ task['title'] }}</p> -->
+  <h1>New Task</h1>
+  <form (submit)="onFormSubmit()">
+    <p>{{ newTask | json }}</p>
+    <input type="text" name="title" [(ngModel)]="newTask.title">
+    <input type="text" name="description" [(ngModel)]="newTask.description">
+    <input type="submit" value="Create Task">
+  </form>
+  <h1 *ngIf="wasEditBtnClicked">
+    <form (submit)="onEditFormSubmit()">
+      <input type="text" name="title" [(ngModel)]="thisTask.title"/>
+      <input type="text" name="description" [(ngModel)]="thisTask.description">
+      <input type="submit" value="Update Task">
+    </form>
+  </h1>
 </body>
 </html>

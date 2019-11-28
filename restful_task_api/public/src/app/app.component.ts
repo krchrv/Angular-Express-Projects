@@ -9,10 +9,16 @@ import { HttpService } from './http.service';
 export class AppComponent implements OnInit {
   tasks;
   aTask;
+  newTask: any;
+  thisTask: any;
+  wasEditBtnClicked: boolean;
 
   constructor(private _httpService: HttpService) { }
 
   ngOnInit() {
+    this.wasEditBtnClicked = false;
+    this.newTask = { title: '', description: '' };
+    this.getTasksFromService()
     this.getOneTaskFromService()
   }
 
@@ -31,21 +37,47 @@ export class AppComponent implements OnInit {
     })
   }
 
-  onButton(num: number): void {
-    console.log(`Button click with param: ${num}`);
-    this.getTasksFromService()
-    let obs = this._httpService.postToServer({data: num})
-    obs.subscribe(data => {
-      console.log("Got data??", data);
-    })
-  }
-
   onShowBtn(id: string): void {
     console.log(`The id that was clicked: ${id}`);
     let obs = this._httpService.getTaskById(id);
     obs.subscribe(data => {
       console.log("onShowBtn data:", data);
       this.aTask = data;
+    })
+  }
+
+  onDeleteBtn(id: string) {
+    let obs = this._httpService.deleteTaskById(id);
+    obs.subscribe(data => {
+      console.log("Deleting task*****", data);
+      this.getTasksFromService();
+      this.wasEditBtnClicked = false;
+    })
+  }
+
+  onEditBtn(thisTask: Object) {
+    this.wasEditBtnClicked = true;
+    this.thisTask = thisTask;
+  }
+
+  onFormSubmit() {
+    console.log("TITLE INPUT*****", this.newTask.title);
+    let obs = this._httpService.createTask({ 
+      title: this.newTask.title,
+      description: this.newTask.description
+    });
+
+    obs.subscribe(data => {
+      console.log("Form data***:", data);
+      this.getTasksFromService();
+      this.newTask = { title: '', description: '' };
+    })
+  }
+
+  onEditFormSubmit() {
+    let obs = this._httpService.editTaskById(this.thisTask._id, this.thisTask);
+    obs.subscribe(data => {
+      console.log("Edit form button click****", data);
     })
   }
 }
