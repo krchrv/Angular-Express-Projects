@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
 
-console.log('creating user model');
-
 const { Schema } = mongoose;
 const CakeSchema = new Schema({
     cakeURL: { type: String, required: true },
-    rating: { type: Number, required: true },
+    rating: [Number],
     baker: { type: String, required: true }
 
 }, {timestamps: true});

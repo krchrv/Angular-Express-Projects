@@ -1,23 +1,16 @@
 const CakeController = require('../controllers/cake.controller')
 
-console.log('CakeController: ', CakeController);
-
 module.exports = function Route(app, server){
 
     const mongoose = require('mongoose');
 
     mongoose.set('useUnifiedTopology', true);
 
-    app.get('/', (req, res) => {
-        CakeController.new(req, res);
-    });
+    app.get('/cakes', (req, res) => {
+        CakeController.index(req, res);
+    })
 
-    app.post('/quotes', (req, res) => {
+    app.post('/cakes', (req, res) => {
         CakeController.create(req, res);
     });
-
-    app.get('/quotes', (req, res) => {
-        CakeController.index(req, res);
-    });
-
 };

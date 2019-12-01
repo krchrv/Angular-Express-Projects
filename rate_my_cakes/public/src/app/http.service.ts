@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { of, Observable } from 'rxjs';
+import { Cake } from './models/cake';
 
 @Injectable({
   providedIn: 'root'
@@ -9,23 +11,12 @@ export class HttpService {
   constructor(private _http: HttpClient) {
   }
 
-  getTasks() {
-    return this._http.get('/tasks');
+  getCakes(): Observable<Cake[]> {
+    return this._http.get<Cake[]>('http://localhost:3000/cakes');
   }
 
-  getTaskById(id: string) {
-    return this._http.get(`/tasks/${id}`);
-  }
-
-  createTask(newTask) {
-    return this._http.post('/tasks', newTask);
-  }
-
-  deleteTaskById(id: string) {
-    return this._http.delete(`/tasks/${id}`);
-  }
-
-  editTaskById(id: string, thisTask) {
-    return this._http.put(`/tasks/${id}`, thisTask);
+  createCake(newCake: Cake): Observable<Cake> {
+    console.log("Is this being hit?");
+    return this._http.post<Cake>('http://localhost:3000/cakes', newCake);
   }
 }
