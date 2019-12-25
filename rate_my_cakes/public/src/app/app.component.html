@@ -9,42 +9,43 @@
 <body>
   <h1>Rate My Cakes</h1>
   <form (submit)="onCakeSubmit($event, cakeForm)" #cakeForm="ngForm">
+    {{ cakeForm.value | json }}
     <label>Image URL:</label>
     <input type="text" name="cakeURL" [(ngModel)]="newCake.cakeURL">
     <label>Baker Name:</label>
     <input type="text" name="baker" [(ngModel)]="newCake.baker">
-    <select name="rating" [(ngModel)]="newCake.rating">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
     <input type="submit" value="submit">
   </form>
   <a href="#" (click)="onViewCakes()">View All Cakes? (toggle)</a>
-  <table *ngIf="wasViewHit">
+  <table class="main-table" *ngIf="wasViewHit">
       <tr>
         <th>Cake Baker:</th>
         <th>Cake URL:</th>
         <th>Cake Rating:</th>
-        <th>Rate:</th>
+        <th>Rate Cake:</th>
       </tr>
-    <tbody *ngFor="let cake of allCakes">
+    <tbody *ngFor="let cake of allCakes; let i = index">
       <tr>
         <td>{{ cake.baker }}</td>
-        <td>{{ cake.cakeURL }}e</td>
-        <td>{{ cake.rating }}</td>
+        <td><a href="#" (click)="selectCake(cake)">{{ cake.cakeURL }}</a></td>
         <td>
-          <form (submit)="onRateForm($event, rateForm, cake)" #rateForm="ngForm">
-            <select name="rating" [(ngModel)]="cake.rating">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+          {{ cake.avg }}
+          <!-- <div *ngFor="let rate of cake.rating">
+            {{ rate.rating }}
+            {{ ratingResult }}
+          </div> -->
+        </td>
+        <td>
+          <form (submit)="onRateForm($event, rateForm, cake._id)" #rateForm="ngForm">
+            <select name="rating" ngModel> <!-- [(ngModel)]="newRate.rating" -->
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2">2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
             </select>
-            <input type="submit" value="Rate">
+            <textarea name="comment" ngModel></textarea> <!-- newRate.comment -->
+            <input type="submit" value="submit">
           </form>
         </td>
       </tr>

@@ -1,5 +1,6 @@
 export class Cake {
     cakeURL: string;
-    rating: number[];
     baker: string;
+    // rating: number;
+    // comment: string;
 }

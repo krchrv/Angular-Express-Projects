@@ -1,4 +1,5 @@
 const Cake = require('mongoose').model('Cake');
+const Rate = require('mongoose').model('Rate');
 
 module.exports = {
 // Get all resources
@@ -26,6 +27,7 @@ module.exports = {
     },
 // Create one resource
     create(req, res) { 
+        console.log("REQ BODY ****", req.body);
         Cake.create(req.body)
         .then(newCake => {
             console.log("Created Cake: ", newCake);
@@ -36,6 +38,26 @@ module.exports = {
             res.json(err);
         })
     },
+    
+    postRate(req, res) {
+        console.log("INSIDE postRate Controller***", req.body);
+        Rate.create(req.body, (err, newRate) => {
+            if(err) {
+                console.log(err);
+                res.json(err);
+            } else {
+                console.log("WHAT IS THIS newRate --->>>", newRate);
+                Cake.findByIdAndUpdate({ _id: req.params.id }, { $push: { rating: newRate }}, (err) => {
+                    if(err) {
+                        console.log(err);
+                        res.json(err);
+                    } else {
+                        console.log("**Rating Update Success**");
+                    }
+                })
+            }
+        })
+    }
 // Display form for editing resource
     // edit(req, res) { },
 // Send updated resource for saving in database
