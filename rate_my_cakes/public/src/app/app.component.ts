@@ -16,9 +16,11 @@ export class AppComponent implements OnInit {
   allCakes: any; // Object[]; returns err, explore the err.
   newRate = new Rate();
   ratingResult;
+  display: boolean;
+  displayedCake;
 
   constructor(private _httpService: HttpService) { }
-
+ 
   ngOnInit() {
     this.ratingResult = 0;
     // this.newRate = { rating: null, comment: '' };
@@ -37,7 +39,9 @@ export class AppComponent implements OnInit {
     obs.subscribe(dbCakes => {
       console.log("All Cakes OnInit", dbCakes);
       this.allCakes = dbCakes;
-      console.log("THIS IS HERE--------", this.allCakes[3]._id);
+      this.allCakes.forEach(element => {
+        this.selectCake(element);
+      })
     })
   }
 
@@ -50,7 +54,7 @@ export class AppComponent implements OnInit {
       console.log("onCakeSubmit createdCake:***", createdCake);
     })
     this.getCakesFromService();
-  }
+  }   
 
   onViewCakes() {
     if(this.wasViewHit) {
@@ -64,21 +68,32 @@ export class AppComponent implements OnInit {
     this.selectedCake = cake;
     let sum = 0;
     this.selectedCake.rating.forEach(element => {
-      console.log("new elements---", element);
       sum += element.rating;
     })
     this.selectedCake['avg'] = (sum / this.selectedCake.rating.length);
-    console.log("grand avg---", this.selectedCake['avg']);
+  }
+
+  displayCake(cake) {
+    this.display = true;
+    this.displayedCake = cake;
   }
 
   onRateForm(event: Event, rateForm: NgForm, cakeId: string) {
     event.preventDefault();
     this.newRate = rateForm.value;
-    console.log("DO YOU WANT TO BE postRating() this?***>>>", this.newRate);
+    console.log("DO YOU WANT TO BE postRating() t his?***>>>", this.newRate);
     let obs = this._httpService.postRating(cakeId, this.newRate);
     obs.subscribe(postedRating => {
       console.log("postedRating*****", postedRating);
     })
     this.getCakesFromService();
+  }
+
+  displayAvg(avg: number) {
+    if(avg) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

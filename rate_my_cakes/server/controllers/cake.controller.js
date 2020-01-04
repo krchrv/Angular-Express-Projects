@@ -46,7 +46,6 @@ module.exports = {
                 console.log(err);
                 res.json(err);
             } else {
-                console.log("WHAT IS THIS newRate --->>>", newRate);
                 Cake.findByIdAndUpdate({ _id: req.params.id }, { $push: { rating: newRate }}, (err) => {
                     if(err) {
                         console.log(err);

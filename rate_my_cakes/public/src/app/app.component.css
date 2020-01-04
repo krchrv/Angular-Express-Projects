@@ -11,7 +11,7 @@ table {
 
 td, th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 16px;
 }
 
 th {
@@ -19,8 +19,32 @@ th {
     padding-bottom: 12px;
 }
 
-/* .main-table {
-    width: 800px;
-    height: 100px;
-    overflow: auto;
-} */
+#scrollwheel {
+    margin-top: 20px;
+    width: 1000px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+.allCakes-btn {
+    margin: 30px 10px 10px 10px;
+    padding: 10px;
+    background-color: lightblue;
+}
+
+.cakeForm {
+    display: inline-block;
+}
+
+.displayedCake {
+    margin: 10px 0px 10px 0px;
+}
+
+.starsSpan {
+    display: block;
+}

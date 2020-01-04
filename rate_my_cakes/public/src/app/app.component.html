@@ -8,48 +8,67 @@
 </head>
 <body>
   <h1>Rate My Cakes</h1>
-  <form (submit)="onCakeSubmit($event, cakeForm)" #cakeForm="ngForm">
-    {{ cakeForm.value | json }}
+  <form class="cakeForm" (submit)="onCakeSubmit($event, cakeForm)" #cakeForm="ngForm">
     <label>Image URL:</label>
     <input type="text" name="cakeURL" [(ngModel)]="newCake.cakeURL">
     <label>Baker Name:</label>
     <input type="text" name="baker" [(ngModel)]="newCake.baker">
     <input type="submit" value="submit">
   </form>
-  <a href="#" (click)="onViewCakes()">View All Cakes? (toggle)</a>
-  <table class="main-table" *ngIf="wasViewHit">
-      <tr>
-        <th>Cake Baker:</th>
-        <th>Cake URL:</th>
-        <th>Cake Rating:</th>
-        <th>Rate Cake:</th>
-      </tr>
-    <tbody *ngFor="let cake of allCakes; let i = index">
-      <tr>
-        <td>{{ cake.baker }}</td>
-        <td><a href="#" (click)="selectCake(cake)">{{ cake.cakeURL }}</a></td>
-        <td>
-          {{ cake.avg }}
-          <!-- <div *ngFor="let rate of cake.rating">
-            {{ rate.rating }}
-            {{ ratingResult }}
-          </div> -->
-        </td>
-        <td>
-          <form (submit)="onRateForm($event, rateForm, cake._id)" #rateForm="ngForm">
-            <select name="rating" ngModel> <!-- [(ngModel)]="newRate.rating" -->
-              <option [ngValue]="1">1</option>
-              <option [ngValue]="2">2</option>
-              <option [ngValue]="3">3</option>
-              <option [ngValue]="4">4</option>
-              <option [ngValue]="5">5</option>
-            </select>
-            <textarea name="comment" ngModel></textarea> <!-- newRate.comment -->
-            <input type="submit" value="submit">
-          </form>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <a class="allCakes-btn" href="#" (click)="onViewCakes()">View All Cakes? (toggle)</a>
+  <div id="scrollwheel">
+    <table class="main-table" *ngIf="wasViewHit">
+      <thead>
+          <tr>
+            <th>Cake Baker:</th>
+            <th>Cake:</th>
+            <th>Cake Rating:</th>
+            <th>Rate Cake:</th>
+          </tr>
+      </thead>
+      <tbody *ngFor="let cake of allCakes; let i = index">
+        <tr>
+          <td>{{ cake.baker }}</td>
+          <td><a href="#" (click)="displayCake(cake)"><img [src]="cake.cakeURL" alt="N / A"></a></td>
+          <td>
+            <p *ngIf="displayAvg(cake.avg); else elseBlock">
+              {{ cake.avg }}
+            </p>
+            <ng-template #elseBlock>N / A</ng-template>
+          </td>
+          <td>
+            <form (submit)="onRateForm($event, rateForm, cake._id)" #rateForm="ngForm">
+              <select name="rating" ngModel>
+                <option value="" disabled selected>Select</option>
+                <option [ngValue]="1">1 stars</option>
+                <option [ngValue]="2">2 stars</option>
+                <option [ngValue]="3">3 stars</option>
+                <option [ngValue]="4">4 stars</option>
+                <option [ngValue]="5">5 stars</option>
+              </select>
+              <textarea name="comment" placeholder="Type your comment here" ngModel></textarea>
+              <input type="submit" value="submit">
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="this.display">
+    <div>
+      <span class="starsSpan"><h3>Baked By: {{ this.displayedCake.baker }}</h3></span>
+      <span class="starsSpan">Cake: <img [src]="this.displayedCake.cakeURL" alt="N / A"></span>
+      <div *ngIf="this.displayAvg(this.displayedCake.avg); else elseBlock">
+          <span class="starsSpan">Average Rating: {{ this.displayedCake.avg }} stars</span>
+      </div>
+      <ng-template #elseBlock>Average Rating: N / A</ng-template>
+      <div *ngFor="let obj of this.displayedCake.rating">
+        <div class="displayedCake">
+          <span class="starsSpan">{{ obj.rating }} stars</span>
+          {{ obj.comment }}
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
