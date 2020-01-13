@@ -25,3 +25,4 @@ export class HttpService {
     return this._http.post(`http://localhost:3000/rate/${id}/`, cakeRating);
   }
 }
+             

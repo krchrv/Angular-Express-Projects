@@ -51,7 +51,7 @@ module.exports = {
                         console.log(err);
                         res.json(err);
                     } else {
-                        console.log("**Rating Update Success**");
+                        console.log("RATING SUCCESS*******");
                     }
                 })
             }
